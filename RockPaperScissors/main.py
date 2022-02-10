@@ -10,14 +10,14 @@ gameLogicService.print_game_introduction()
 isComputerPlaying = gameLogicService.decide_game_mode()
 
 while isPlaying:
-    user1_action = gameLogicService.get_user_action()
+    user1_selection = gameLogicService.get_user_selection()
     if isComputerPlaying:
-        user2_action = gameLogicService.get_computer_action()
+        user2_selection = gameLogicService.get_computer_selection()
     else:
-        user2_action = gameLogicService.get_user_action()
-    gameLogicService.determine_winner(user1_action, user2_action)
+        user2_selection = gameLogicService.get_user_selection()
+    gameLogicService.determine_winner(user1_selection, user2_selection)
     isPlaying = gameLogicService.ask_keep_playing()
 
 gameLogicService.end_game()
 
-# TODO: ADD DATABASE FOR CPU STATS?
+# TODO: ADD DATABASE FOR CPU/PLAYER STAT TRACKING?

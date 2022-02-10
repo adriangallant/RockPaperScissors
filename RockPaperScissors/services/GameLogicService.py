@@ -16,28 +16,28 @@ def print_game_introduction():
     print()
 
 
-def get_user_action():
-    choices = [f"{action.name}[{action.value}]" for action in Action.Selections]
+def get_user_selection():
+    choices = [f"{selection.name}[{selection.value}]" for selection in Action.Selections]
     choices_str = ", ".join(choices)
     while True:
         try:
             user_input = int(input(f"Enter a choice ({choices_str}):"))
-            action = Action.Selections(user_input)
+            selection = Action.Selections(user_input)
             break
         except ValueError:
             range_str = f"[0, {len(Action.Selections) - 1}]"
             print(f"Invalid selection. Enter a value in range {range_str}")
             continue
-    return action
+    return selection
 
 
-def get_computer_action():
+def get_computer_selection():
     selection = random.randint(0, len(Action.Selections) - 1)
-    action = Action.Selections(selection)
-    return action
+    selection = Action.Selections(selection)
+    return selection
 
 
-def determine_winner(user1_action, user2_action):
+def determine_winner(user1_selection, user2_selection):
     global losses, wins, ties
     victories = {
         Action.Selections.Rock: [Action.Selections.Scissors],  # Rock beats scissors
@@ -45,15 +45,15 @@ def determine_winner(user1_action, user2_action):
         Action.Selections.Scissors: [Action.Selections.Paper]  # Scissors beat paper
     }
 
-    defeats = victories[user1_action]
-    if user1_action == user2_action:
-        print(f"Both players selected {user1_action.name}. It's a tie!")
+    defeats = victories[user1_selection]
+    if user1_selection == user2_selection:
+        print(f"Both players selected {user1_selection.name}. It's a tie!")
         ties += 1
-    elif user2_action in defeats:
-        print(f"{user1_action.name} beats {user2_action.name}! You win!")
+    elif user2_selection in defeats:
+        print(f"{user1_selection.name} beats {user2_selection.name}! You win!")
         wins += 1
     else:
-        print(f"{user2_action.name} beats {user1_action.name}! You lose.")
+        print(f"{user2_selection.name} beats {user1_selection.name}! You lose.")
         losses += 1
     print_total_game_results()
 
