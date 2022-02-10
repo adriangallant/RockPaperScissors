@@ -24,7 +24,7 @@ def get_user_action():
             user_input = int(input(f"Enter a choice ({choices_str}):"))
             action = Action.Selections(user_input)
             break
-        except ValueError as e:
+        except ValueError:
             range_str = f"[0, {len(Action.Selections) - 1}]"
             print(f"Invalid selection. Enter a value in range {range_str}")
             continue
@@ -86,12 +86,16 @@ def ask_keep_playing():
 
 
 def decide_game_mode():
-    print()
-    user_input = int(input('Single Player [1] or Multiplayer [2] :'))
-    if user_input == 1:
-        return True
-    elif user_input == 2:
-        return False
-    else:
-        print('Incorrect Option, Try Again:')
-        decide_game_mode()
+    while True:
+        try:
+            print()
+            user_input = int(input('Single Player [1] or Multiplayer [2] :'))
+            if user_input == 1:
+                return True
+            elif user_input == 2:
+                return False
+            else:
+                raise ValueError('Incorrect Option, Try Again:')
+        except ValueError as e:
+            print(e)
+            continue

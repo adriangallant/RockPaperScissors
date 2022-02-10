@@ -15,7 +15,6 @@ while isPlaying:
         user2_action = gameLogicService.get_computer_action()
     else:
         user2_action = gameLogicService.get_user_action()
-
     gameLogicService.determine_winner(user1_action, user2_action)
     isPlaying = gameLogicService.ask_keep_playing()
 
