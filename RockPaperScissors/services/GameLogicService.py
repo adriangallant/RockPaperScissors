@@ -1,4 +1,5 @@
 import random
+import getpass
 from actions import Action
 
 wins = losses = ties = 0
@@ -21,7 +22,7 @@ def get_user_selection():
     choices_str = ", ".join(choices)
     while True:
         try:
-            user_input = int(input(f"Enter a choice ({choices_str}):"))
+            user_input = int(getpass.getpass(prompt=f"Enter a choice ({choices_str}):"))
             selection = Action.Selections(user_input)
             break
         except ValueError:
@@ -37,7 +38,7 @@ def get_computer_selection():
     return selection
 
 
-def determine_winner(user1_selection, user2_selection):
+def determine_winner(user1_selection, user2_selection, is_computer_playing):
     global losses, wins, ties
     victories = {
         Action.Selections.Rock: [Action.Selections.Scissors],  # Rock beats scissors
@@ -50,39 +51,45 @@ def determine_winner(user1_selection, user2_selection):
         print(f"Both players selected {user1_selection.name}. It's a tie!")
         ties += 1
     elif user2_selection in defeats:
-        print(f"{user1_selection.name} beats {user2_selection.name}! You win!")
+        print(f"{user1_selection.name} beats {user2_selection.name}!",
+              (lambda cpu_playing: 'You win!' if cpu_playing else 'Player 1 wins!')(is_computer_playing))
         wins += 1
     else:
-        print(f"{user2_selection.name} beats {user1_selection.name}! You lose.")
+        print(f"{user2_selection.name} beats {user1_selection.name}!",
+              (lambda cpu_playing: 'You lose!' if cpu_playing else 'Player 2 wins!')(is_computer_playing))
         losses += 1
-    print_total_game_results()
+    print_total_game_results(is_computer_playing)
 
 
-def print_total_game_results():
+def print_total_game_results(is_computer_playing):
     global wins, losses, ties
-    print()
-    print('Wins: %s, Losses: %s, Ties: %s' % (wins, losses, ties))
-    print()
+    if is_computer_playing:
+        print()
+        print('Wins: %s, Losses: %s, Ties: %s' % (wins, losses, ties))
+        print()
+    else:
+        print()
+        print('Player 1 Wins: %s, Player 2 Wins: %s, Ties: %s' % (wins, losses, ties))
+        print()
 
 
-def end_game():
+def end_game(is_computer_playing):
     print('Thank you for playing!')
     print('Here is your record for this session: ')
-    print_total_game_results()
+    print_total_game_results(is_computer_playing)
     print('Goodbye!')
 
 
 def ask_keep_playing():
-    keep_playing_flag = input('Play again? (y/n):').lower().strip()
-    is_playing = ''
-    if keep_playing_flag == 'y':
-        is_playing = True
-    elif keep_playing_flag == 'n':
-        is_playing = False
-    else:
-        print('Incorrect Option, Try Again:')
-        ask_keep_playing()
-    return is_playing
+    while True:
+        keep_playing_flag = input('Play again? (y/n):').lower().strip()
+        if keep_playing_flag == 'y':
+            return True
+        elif keep_playing_flag == 'n':
+            return False
+        else:
+            print('Incorrect Option, Try Again:')
+            continue
 
 
 def decide_game_mode():

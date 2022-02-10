@@ -15,9 +15,9 @@ while isPlaying:
         user2_selection = gameLogicService.get_computer_selection()
     else:
         user2_selection = gameLogicService.get_user_selection()
-    gameLogicService.determine_winner(user1_selection, user2_selection)
+    gameLogicService.determine_winner(user1_selection, user2_selection, isComputerPlaying)
     isPlaying = gameLogicService.ask_keep_playing()
 
-gameLogicService.end_game()
+gameLogicService.end_game(isComputerPlaying)
 
 # TODO: ADD DATABASE FOR CPU/PLAYER STAT TRACKING?
