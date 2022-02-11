@@ -1,7 +1,6 @@
 # Make a Rock, Paper, Scissors Program
 # I did my own version, then made improvements inspired from (notably dictionary, enums, exceptions)
-# https://realpython.com/python-rock-paper-scissors/#play-several-games-in-a-row
-
+# https://realpython.com/python-rock-paper-scissors/#play-several-games-in-a-row https://cocalc.com
 from services import GameLogicService as gameLogicService
 
 isPlaying = True

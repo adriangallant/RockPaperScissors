@@ -1,6 +1,7 @@
 import random
 import getpass
 from actions import Action
+from database import databaseService as dB
 
 wins = losses = ties = 0
 
@@ -50,34 +51,63 @@ def determine_winner(user1_selection, user2_selection, is_computer_playing):
     if user1_selection == user2_selection:
         print(f"Both players selected {user1_selection.name}. It's a tie!")
         ties += 1
+        dB.insert_result(
+            'NONE',
+            'NONE',
+            'NONE',
+            'NONE',
+            Action.Selections(user1_selection).name,
+            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
+                is_computer_playing)
+        )
     elif user2_selection in defeats:
         print(f"{user1_selection.name} beats {user2_selection.name}!",
               (lambda cpu_playing: 'You win!' if cpu_playing else 'Player 1 wins!')(is_computer_playing))
         wins += 1
+        dB.insert_result(
+            Action.Players.Player1.value,
+            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
+                is_computer_playing),
+            Action.Selections(user1_selection).name,
+            Action.Selections(user2_selection).name,
+            'NONE',
+            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
+                is_computer_playing)
+        )
     else:
         print(f"{user2_selection.name} beats {user1_selection.name}!",
               (lambda cpu_playing: 'You lose!' if cpu_playing else 'Player 2 wins!')(is_computer_playing))
         losses += 1
+        dB.insert_result(
+            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
+                is_computer_playing),
+            Action.Players.Player1.value,
+            Action.Selections(user2_selection).name,
+            Action.Selections(user1_selection).name,
+            'NONE',
+            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
+                is_computer_playing)
+        )
     print_total_game_results(is_computer_playing)
 
 
 def print_total_game_results(is_computer_playing):
     global wins, losses, ties
+    print()
     if is_computer_playing:
-        print()
-        print('Wins: %s, Losses: %s, Ties: %s' % (wins, losses, ties))
-        print()
+        print('Wins: %s\nLosses: %s\nTies: %s' % (wins, losses, ties))
     else:
-        print()
-        print('Player 1 Wins: %s, Player 2 Wins: %s, Ties: %s' % (wins, losses, ties))
-        print()
+        print('Player 1 Wins: %s\nPlayer 2 Wins: %s\nTies: %s' % (wins, losses, ties))
+    print()
 
 
 def end_game(is_computer_playing):
+    print()
     print('Thank you for playing!')
     print('Here is your record for this session: ')
     print_total_game_results(is_computer_playing)
     print('Goodbye!')
+    print()
 
 
 def ask_keep_playing():
@@ -103,6 +133,6 @@ def decide_game_mode():
                 return False
             else:
                 raise ValueError('Incorrect Option, Try Again:')
-        except ValueError as e:
-            print(e)
+        except ValueError:
+            print('Incorrect Option, Try Again:')
             continue
