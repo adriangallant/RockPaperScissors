@@ -2,6 +2,15 @@
 # I did my own version, then made improvements inspired from (notably dictionary, enums, exceptions)
 # https://realpython.com/python-rock-paper-scissors/#play-several-games-in-a-row https://cocalc.com
 from services import GameLogicService as gameLogicService
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello():
+    return '<h1>Hello, World!</h1>'
+
 
 isPlaying = True
 
@@ -20,3 +29,5 @@ while isPlaying:
 gameLogicService.end_game(isComputerPlaying)
 
 # TODO: ADD DATABASE FOR CPU/PLAYER STAT TRACKING?
+# TODO: ADD FRONTEND
+# TODO: ADD DISTINCT USER FUNCTIONALITY
