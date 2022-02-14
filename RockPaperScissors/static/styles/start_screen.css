@@ -1,0 +1,35 @@
+html, body {
+    height: 100%;
+}
+
+.bg-image {
+    /* The image used */
+    background-image: url("../images/rpsStartScreen.jpeg");
+
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+/*
+html {
+  background: url("../images/rpsStartScreen.jpeg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body {
+    background-image: url("../images/rpsStartScreen.jpeg");
+}
+*/
+
+.radial-gradient {
+    background: radial-gradient(#e7a163, #fec68b);
+}
