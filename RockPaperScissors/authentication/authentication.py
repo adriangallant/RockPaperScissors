@@ -10,3 +10,5 @@ authentication_blueprint = Blueprint('authentication_blueprint', __name__,
 @authentication_blueprint.route('/authentication/')
 def introduction_screen():
     return render_template('authentication/start_screen.html')
+
+

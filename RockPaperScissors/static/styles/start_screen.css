@@ -1,35 +1,47 @@
-html, body {
-    height: 100%;
+.white-background {
+    background-color: white;
 }
 
-.bg-image {
-    /* The image used */
-    background-image: url("../images/rpsStartScreen.jpeg");
-
-    /* Full height */
-    height: 100%;
-
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.center-div {
+    margin: auto;
+    width: 80%;
 }
 
-
-/*
-html {
-  background: url("../images/rpsStartScreen.jpeg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+.center-text {
+    text-align: center;
 }
 
-body {
-    background-image: url("../images/rpsStartScreen.jpeg");
+.btn {
+    width: 12em;
+    margin-right: 1em;
+    margin-left: 1em;
 }
-*/
 
-.radial-gradient {
-    background: radial-gradient(#e7a163, #fec68b);
+.btn:hover span{
+    animation: animation 1s linear infinite;
+}
+
+@keyframes animation {
+  50% {
+    opacity: 0;
+  }
+}
+
+.bottom-div {
+    padding-top: 1em;
+    position: absolute;
+    left: 1px;
+    bottom: 0px;
+    width:100%;
+    height: 20%;
+}
+
+.blink_me {
+  animation: blinker 5s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
