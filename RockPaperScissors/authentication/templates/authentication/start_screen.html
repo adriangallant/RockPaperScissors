@@ -11,8 +11,12 @@
         </div>
     </div>
     <div class="center-div center-text bottom-div">
-        <button type="button" class="nes-btn btn"><span id="1playerButton">1 Player</span></button>
-        <button type="button" class="nes-btn btn"><span id="2playersButton">2 Players</span></button>
+        <a href="{{ url_for('game_blueprint.play_game') }}" class="nes-btn btn"><span>1 Player</span></a>
+        <button type="button" class="nes-btn btn"><span>2 Players</span></button>
+        <button type="button" class="nes-btn btn"><span>Stats</span></button>
+        <br>
+        <br>
+        <button type="button" class="btn login-btn"><span>Login</span></button>
     </div>
 </div>
 {% endblock %}

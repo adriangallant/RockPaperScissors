@@ -21,6 +21,15 @@
     animation: animation 1s linear infinite;
 }
 
+.login-btn {
+    border-style: hidden;
+    background-color: transparent;
+}
+
+.login-btn:hover {
+    color: white;
+}
+
 @keyframes animation {
   50% {
     opacity: 0;

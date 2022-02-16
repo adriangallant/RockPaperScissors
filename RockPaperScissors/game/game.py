@@ -9,7 +9,7 @@ game_blueprint = Blueprint('game_blueprint', __name__,
 
 
 @game_blueprint.route('/')
-@game_blueprint.route('/game/')
+@game_blueprint.route('/play/')
 def play_game():
     return render_template('game/gameplay_screen.html')
 

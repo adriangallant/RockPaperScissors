@@ -1,5 +1,12 @@
 {% extends "index.html" %}
 {% block title %}Game{% endblock %}
+{% block header %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/gameplay_screen.css') }}">
+{% endblock %}
 {% block content %}
-<h1>Hello World!</h1>
+<div class="game-panel">
+    <div class="center-div">
+        <img class="center-img" src="../../static/images/choices 2.png">
+    </div>
+</div>
 {% endblock %}

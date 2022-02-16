@@ -10,6 +10,8 @@ app = Flask(__name__)
 app.register_blueprint(authentication_blueprint, url_prefix='/')
 app.register_blueprint(game_blueprint, url_prefix='/game')
 
+if __name__ == "__main__":
+    app.run(debug=True)
 # TODO: ADD DATABASE FOR CPU/PLAYER STAT TRACKING?
 # TODO: ADD FRONTEND
 # TODO: ADD DISTINCT USER FUNCTIONALITY
