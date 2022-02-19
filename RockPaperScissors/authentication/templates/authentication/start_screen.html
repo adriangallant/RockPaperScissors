@@ -11,8 +11,8 @@
         </div>
     </div>
     <div class="center-div center-text bottom-div">
-        <a href="{{ url_for('game_blueprint.play_game') }}" class="nes-btn btn"><span>1 Player</span></a>
-        <button type="button" class="nes-btn btn"><span>2 Players</span></button>
+        <a href="{{ url_for('game_blueprint.rules') }}" class="nes-btn btn" onclick="setComputerPlaying(true)"><span>1 Player</span></a>
+        <button type="button" class="nes-btn btn" onclick="setComputerPlaying(false)"><span>2 Players</span></button>
         <button type="button" class="nes-btn btn"><span>Stats</span></button>
         <br>
         <br>

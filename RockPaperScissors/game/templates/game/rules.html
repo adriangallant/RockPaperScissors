@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% block title %}Game{% endblock %}
+{% block header %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/rules.css') }}">
+{% endblock %}
+{% block content %}
+<div class="game-panel">
+    <div class="center-div">
+        <img class="center-img" src="../../static/images/choices 2.png">
+        <br>
+        <div class="center-div text-black rule-box center-text">
+            <h2 class="title ">Rules of the Game</h2>
+            <hr class="border-black">
+            <ul class="no-bullets">
+                <li>Rock beats Scissors</li>
+                <li>Scissors beats Paper</li>
+                <li>Paper beats Rock</li>
+            </ul>
+        </div>
+        <div class="bottom-right">
+            <a href="{{ url_for('game_blueprint.play_game') }}" class="nes-btn"><span class="blink_me">Play</span></a>
+        </div>
+    </div>
+</div>
+{% endblock %}

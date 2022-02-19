@@ -1,6 +1,7 @@
 # https://realpython.com/flask-blueprint/#what-a-flask-application-looks-like
 from markupsafe import escape
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, jsonify, request
+from database import databaseService as dbService
 
 game_blueprint = Blueprint('game_blueprint', __name__,
                            template_folder='templates',
@@ -9,9 +10,31 @@ game_blueprint = Blueprint('game_blueprint', __name__,
 
 
 @game_blueprint.route('/')
+@game_blueprint.route('/rules/')
+def rules():
+    return render_template('game/rules.html')
+
+
 @game_blueprint.route('/play/')
 def play_game():
-    return render_template('game/gameplay_screen.html')
+    return render_template('game/play_game.html')
+
+
+@game_blueprint.route('/insertResult/', methods=['POST'])
+def insert_result():
+    game_result = request.json
+    try:
+        dbService.insert_result(game_result)
+        return jsonify('Game recorded successfully!')
+    except IndexError:
+        abort(404)
+
+
+#############################
+#############################
+# TEST ROUTES BELOW
+#############################
+#############################
 
 
 @game_blueprint.route('/about/')

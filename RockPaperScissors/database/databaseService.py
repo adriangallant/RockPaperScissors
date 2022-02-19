@@ -34,11 +34,17 @@ def create_table():
     close_connection()
 
 
-def insert_result(winner, loser, winner_choice, loser_choice, tie_choice, second_player):
+def insert_result(game_result):
     open_connection()
     cursor.execute("""
                     INSERT INTO results(winner, loser, winner_choice, loser_choice, tie_choice, second_player) 
                     VALUES(?, ?, ?, ?, ?,?)
-                    """, (winner, loser, winner_choice, loser_choice, tie_choice, second_player)
+                    """, (
+                    game_result['winner'],
+                    game_result['loser'],
+                    game_result['winner_choice'],
+                    game_result['loser_choice'],
+                    game_result['tie_choice'],
+                    game_result['second_player'])
                    )
     close_connection()
