@@ -11,9 +11,9 @@ const choices = {
 }
 
 const victoryScenarios = {
-   0 : choices[1],
-   1 : choices[2],
-   2 : choices[3],
+   0 : choices[2],
+   1 : choices[0],
+   2 : choices[1],
 }
 
 const PLAYERS = {
@@ -22,9 +22,73 @@ const PLAYERS = {
     computer: 'CPU',
 }
 
+const cpuDialogue = {
+    pregame: [
+        'Choose your option. I am going to win!',
+        'Get Ready!',
+        "I'm gonna win!",
+        'You are going to lose!',
+        'Get used to second place...',
+    ],
+    duringChoice: [
+        'Picking right now...',
+        'Get ready to cry....',
+        'Currently picking....',
+        "I'm picking...",
+        'Hmmmm...',
+    ],
+    winning: [
+        'I won!',
+        'Told you I was going to win!',
+        'You lose!',
+        'You lose! Hahaha!',
+        'You should cry home to mama!',
+        'Is that all you got? I win!',
+    ],
+    losing: [
+        'Noooo! You win!',
+        "I can't believe I lost to you!",
+        'I lose... :(',
+        "Don't get used to this feeling! I will win next time",
+        'Maybe next time...',
+    ],
+    tie: [
+        'A tie??',
+        'You should be happy you managed to tie against me!',
+        'Tie? Boring!',
+    ],
+}
+
+function displayComputerDialogue(result) {
+    let dialogueIndex = null;
+    switch (result) {
+        case 'tie':
+            dialogueIndex = Math.floor(Math.random() * cpuDialogue.tie.length);
+            document.getElementById('computerDialogue').innerHTML = cpuDialogue.tie[dialogueIndex];
+            break;
+        case 'loss':
+            dialogueIndex = Math.floor(Math.random() * cpuDialogue.losing.length);
+            document.getElementById('computerDialogue').innerHTML = cpuDialogue.losing[dialogueIndex];
+            break;
+        case 'win':
+            dialogueIndex = Math.floor(Math.random() * cpuDialogue.winning.length);
+            document.getElementById('computerDialogue').innerHTML = cpuDialogue.winning[dialogueIndex];
+            break;
+        case 'duringChoice':
+            dialogueIndex = Math.floor(Math.random() * cpuDialogue.duringChoice.length);
+            document.getElementById('computerDialogue').innerHTML = cpuDialogue.duringChoice[dialogueIndex];
+            break;
+        case 'pregame':
+            dialogueIndex = Math.floor(Math.random() * cpuDialogue.pregame.length);
+            document.getElementById('computerDialogue').innerHTML = cpuDialogue.pregame[dialogueIndex];
+            break;
+        default:
+            document.getElementById('computerDialogue').innerHTML = 'Sorry, something went wrong!';
+    }
+}
+
 function setComputerPlaying(bool) {
     isComputerPlaying = bool;
-    console.log(isComputerPlaying);
 }
 
 function getKeyByValue(object, value) {
@@ -67,6 +131,7 @@ function determineWinner(player1Choice, player2Choice) {
                                       choices[player1Choice],
                                       player2
                                     );
+        displayComputerDialogue('tie');
     } else if (Number(player2Choice) === Number(losingChoice)) {
         wins += 1;
         gameRecord = buildGameResult( PLAYERS.player1,
@@ -76,7 +141,7 @@ function determineWinner(player1Choice, player2Choice) {
                                       'NONE',
                                       player2
                                     );
-        console.log('Player 2 lost');
+        displayComputerDialogue('win');
     } else {
         losses += 1;
         gameRecord = buildGameResult( player2,
@@ -86,7 +151,7 @@ function determineWinner(player1Choice, player2Choice) {
                                       'NONE',
                                       player2
                                     );
-        console.log('Player 1 lost');
+        displayComputerDialogue('loss');
     }
     console.log(`Wins: ${wins} Losses: ${losses} Ties: ${ties}`);
     insertResult(gameRecord);
@@ -99,87 +164,17 @@ function getComputerChoice() {
 
 function playGame(player1Choice) {
     player1Choice = getKeyByValue(choices, player1Choice);
-    const computerChoice = getComputerChoice();
-    console.log(`Player Choice: ${player1Choice}, Computer Choice: ${computerChoice}`);
-    determineWinner(player1Choice, computerChoice);
+    let player2Choice = ''
+    if (isComputerPlaying) {
+        displayComputerDialogue('duringChoice');
+        player2Choice = getComputerChoice();
+        setTimeout(function (){ determineWinner(player1Choice, player2Choice); }, 2000);
+    } else {
+        // TODO: Add local multiplayer
+    }
+    console.log(`Player Choice: ${player1Choice}, Computer Choice: ${player2Choice}`);
 }
 
-
-
-
-
-/*
-
-def get_user_selection():
-    choices = [f"{selection.name}[{selection.value}]" for selection in Action.Selections]
-    choices_str = ", ".join(choices)
-    while True:
-        try:
-            user_input = int(getpass.getpass(prompt=f"Enter a choice ({choices_str}):"))
-            selection = Action.Selections(user_input)
-            break
-        except ValueError:
-            range_str = f"[0, {len(Action.Selections) - 1}]"
-            print(f"Invalid selection. Enter a value in range {range_str}")
-            continue
-    return selection
-
-
-def get_computer_selection():
-    selection = random.randint(0, len(Action.Selections) - 1)
-    selection = Action.Selections(selection)
-    return selection
-
-
-def determine_winner(user1_selection, user2_selection, is_computer_playing):
-    global losses, wins, ties
-    victories = {
-        Action.Selections.Rock: [Action.Selections.Scissors],  # Rock beats scissors
-        Action.Selections.Paper: [Action.Selections.Rock],  # Paper beats rock
-        Action.Selections.Scissors: [Action.Selections.Paper]  # Scissors beat paper
-    }
-
-    defeats = victories[user1_selection]
-    if user1_selection == user2_selection:
-        print(f"Both players selected {user1_selection.name}. It's a tie!")
-        ties += 1
-        dB.insert_result(
-            'NONE',
-            'NONE',
-            'NONE',
-            'NONE',
-            Action.Selections(user1_selection).name,
-            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
-                is_computer_playing)
-        )
-    elif user2_selection in defeats:
-        print(f"{user1_selection.name} beats {user2_selection.name}!",
-              (lambda cpu_playing: 'You win!' if cpu_playing else 'Player 1 wins!')(is_computer_playing))
-        wins += 1
-        dB.insert_result(
-            Action.Players.Player1.value,
-            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
-                is_computer_playing),
-            Action.Selections(user1_selection).name,
-            Action.Selections(user2_selection).name,
-            'NONE',
-            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
-                is_computer_playing)
-        )
-    else:
-        print(f"{user2_selection.name} beats {user1_selection.name}!",
-              (lambda cpu_playing: 'You lose!' if cpu_playing else 'Player 2 wins!')(is_computer_playing))
-        losses += 1
-        dB.insert_result(
-            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
-                is_computer_playing),
-            Action.Players.Player1.value,
-            Action.Selections(user2_selection).name,
-            Action.Selections(user1_selection).name,
-            'NONE',
-            (lambda cpu_playing: Action.Players.Computer.value if cpu_playing else Action.Players.Player2.value)(
-                is_computer_playing)
-        )
-    print_total_game_results(is_computer_playing)
-
-*/
+function init() {
+    displayComputerDialogue('pregame');
+}
