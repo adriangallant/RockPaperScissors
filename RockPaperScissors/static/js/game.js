@@ -59,6 +59,50 @@ const cpuDialogue = {
     ],
 }
 
+function displayEndgameResults(player1Choice, player2Choice, result) {
+    document.getElementById('endgameP1Choice').innerHTML = `You chose: ${choices[player1Choice]}`;
+    document.getElementById('endgameCPUChoice').innerHTML = `Computer chose: ${choices[player2Choice]}`;
+    switch (result) {
+        case 'win':
+            document.getElementById('endgameResult').innerHTML = 'Result: You won!';
+            break;
+        case 'tie':
+            document.getElementById('endgameResult').innerHTML = 'Result: It was a tie!';
+            break;
+        case 'loss':
+            document.getElementById('endgameResult').innerHTML = 'Result: You lose!';
+            break;
+        default:
+            document.getElementById('endgameResult').innerHTML = 'Result: Something went wrong.';
+    }
+}
+
+function isEndgameBoxShowing(flag) {
+    if(flag) {
+        document.getElementById('pickAChoicePrompt').style.display = 'none';
+        document.getElementById('endgameBox').style.display = 'block';
+        return;
+    }
+    document.getElementById('endgameBox').style.display = 'none';
+    document.getElementById('pickAChoicePrompt').style.display = 'block';
+}
+
+function isDuringChoiceTextShowing(flag) {
+    if(!flag) {
+        document.getElementById('duringChoiceText').style.display = 'none';
+        return;
+    }
+    document.getElementById('duringChoiceText').style.display = 'block';
+}
+
+function isUserPromptBoxShowing(flag) {
+    if(!flag) {
+        document.getElementById('pickAChoicePrompt').style.display = 'none';
+        return;
+    }
+    document.getElementById('pickAChoicePrompt').style.display = 'block';
+}
+
 function displayComputerDialogue(result) {
     let dialogueIndex = null;
     switch (result) {
@@ -113,7 +157,6 @@ function buildGameResult(winner, loser, winner_choice, loser_choice, tie_choice,
         tie_choice: tie_choice,
         second_player: second_player,
     }
-    console.log(gameResult);
     return gameResult;
 }
 
@@ -122,6 +165,7 @@ function determineWinner(player1Choice, player2Choice) {
     let losingChoice = victoryScenarios[player1Choice];
     losingChoice = getKeyByValue(choices, losingChoice);
     let gameRecord = {}
+    let result = '';
     if (Number(player1Choice) === Number(player2Choice)) {
         ties += 1;
         gameRecord = buildGameResult( 'NONE',
@@ -132,6 +176,7 @@ function determineWinner(player1Choice, player2Choice) {
                                       player2
                                     );
         displayComputerDialogue('tie');
+        result = 'tie';
     } else if (Number(player2Choice) === Number(losingChoice)) {
         wins += 1;
         gameRecord = buildGameResult( PLAYERS.player1,
@@ -141,7 +186,8 @@ function determineWinner(player1Choice, player2Choice) {
                                       'NONE',
                                       player2
                                     );
-        displayComputerDialogue('win');
+        displayComputerDialogue('loss');
+        result = 'win';
     } else {
         losses += 1;
         gameRecord = buildGameResult( player2,
@@ -151,10 +197,12 @@ function determineWinner(player1Choice, player2Choice) {
                                       'NONE',
                                       player2
                                     );
-        displayComputerDialogue('loss');
+        displayComputerDialogue('win');
+        result = 'loss';
     }
     console.log(`Wins: ${wins} Losses: ${losses} Ties: ${ties}`);
     insertResult(gameRecord);
+    return result;
 }
 
 function getComputerChoice() {
@@ -167,12 +215,18 @@ function playGame(player1Choice) {
     let player2Choice = ''
     if (isComputerPlaying) {
         displayComputerDialogue('duringChoice');
+        isUserPromptBoxShowing(false);
+        isDuringChoiceTextShowing(true);
         player2Choice = getComputerChoice();
-        setTimeout(function (){ determineWinner(player1Choice, player2Choice); }, 2000);
+        setTimeout(function (){
+            const result = determineWinner(player1Choice, player2Choice);
+            isDuringChoiceTextShowing(false);
+            isEndgameBoxShowing(true);
+            displayEndgameResults(player1Choice, player2Choice, result);
+            }, 2000);
     } else {
         // TODO: Add local multiplayer
     }
-    console.log(`Player Choice: ${player1Choice}, Computer Choice: ${player2Choice}`);
 }
 
 function init() {

@@ -140,3 +140,29 @@ li {
     border-style: none;
     background-color: transparent;
 }
+
+#endgameBox {
+    overflow: auto;
+    display: none;
+}
+
+.float-left {
+    float:left;
+}
+
+.float-right {
+    float:right;
+}
+
+.text-red {
+    color: red;
+}
+
+#duringChoiceText {
+    display:none;
+}
+
+.remove-hover-a-default-style:hover {
+    text-decoration: none;
+    color: red;
+}

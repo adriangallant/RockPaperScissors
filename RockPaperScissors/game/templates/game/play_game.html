@@ -18,14 +18,36 @@
         </div>
         <div id="choicesBox" class="center-div">
             <div class="nes-container is-rounded text-black bg-white">
-                <p>Pick a Choice:</p>
-                <br>
-                <div class="pb-1">
-                    <ul id="choicesList" class="center-text">
-                        <li><button class="btn choice-btn" onclick="playGame('Rock')"><span>Rock</span></button></li>
-                        <li><button class="btn choice-btn" onclick="playGame('Paper')"><span>Paper</span></button></li>
-                        <li><button class="btn choice-btn" onclick="playGame('Scissors')"><span>Scissors</span></button></li>
-                    </ul>
+                <div id="pickAChoicePrompt">
+                    <p>Pick a Choice:</p>
+                    <br>
+                    <div class="pb-1">
+                        <ul id="choicesList" class="center-text">
+                            <li><button class="btn choice-btn" onclick="playGame('Rock')"><span>Rock</span></button></li>
+                            <li><button class="btn choice-btn" onclick="playGame('Paper')"><span>Paper</span></button></li>
+                            <li><button class="btn choice-btn" onclick="playGame('Scissors')"><span>Scissors</span></button></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="center-text" id="duringChoiceText">
+                    <p>...</p>
+                </div>
+                <div id="endgameBox">
+                    <div class="float-left">
+                        <p id="endgameP1Choice">You chose:</p>
+                        <p id="endgameCPUChoice">Computer chose:</p>
+                        <p id="endgameResult">Result: </p>
+                    </div>
+                    <div class="float-right">
+                        <button class="btn choice-btn" onclick="isEndgameBoxShowing(false)"><span>Play Again</span></button>
+                        <br><br>
+                        <button class="btn choice-btn">
+                            <a href="{{ url_for('authentication_blueprint.introduction_screen') }}"
+                               class="text-red remove-hover-a-default-style">
+                                <span>Exit</span>
+                            </a>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
